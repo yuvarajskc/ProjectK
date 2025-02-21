@@ -14,4 +14,5 @@ GO
 CREATE TABLE [dbo].[TodoItems](	[Id] [bigint] IDENTITY(1,1) NOT NULL,	[Name] [varchar](50) NULL,	[IsComplete] [bit] NULL) ON [PRIMARY]
 GO
 
-
+INSERT INTO [dbo].[TodoItems] ([Name], [IsComplete]) VALUES ('Walk tiger', 0);
+GO
