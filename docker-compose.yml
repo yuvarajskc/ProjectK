@@ -1,0 +1,44 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ./db-init:/docker-entrypoint-initdb.d
+    # healthcheck:
+    #   test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Passw0rd", "-Q", "SELECT 1"]
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 20s
+      
+  myapi:
+    build:
+      context: .
+      dockerfile: MyApi/Dockerfile
+    container_name: myapi
+    environment:
+      - ConnectionStrings__TodoDatabase=Server=sqlserver;Database=TodoDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+    ports:
+      - "5000:8080"
+    depends_on:
+      - sqlserver
+    # depends_on:
+    #   sqlserver:
+    #     condition: service_healthy
+  
+  angular:
+    build:
+      context: ./MyAngularApp
+      dockerfile: Dockerfile
+    container_name: angular
+    ports:
+      - "4200:80"
+    depends_on:
+      - myapi
+volumes:
+  sqlserver_data:
