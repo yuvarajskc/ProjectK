@@ -6,9 +6,9 @@ EXPOSE 8080
 # Use SDK image for building the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["MyApi/MyApi.csproj", "MyApi/"]
+COPY ["MyApi.csproj", "MyApi/"]
 RUN dotnet restore "MyApi/MyApi.csproj"
-COPY . .
+COPY . MyApi/
 WORKDIR "/src/MyApi"
 RUN dotnet publish -c Release -o /app
 
