@@ -31,7 +31,7 @@ services:
   myapi:
     build:
       context: .
-      dockerfile: MyApi/Dockerfile
+      dockerfile: MyApi/Dockerfile #this may be failed because of the path in docker file
     container_name: myapi
     environment:
       - ConnectionStrings__TodoDatabase=Server=sqlserver;Database=TodoDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
