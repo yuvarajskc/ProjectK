@@ -11,7 +11,12 @@ builder.Services.AddDbContext<TodoContext>(opt =>
     {
         sqlOptions.EnableRetryOnFailure();
     }));
-    
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddFile("Logs/myapp-{Date}.log"); // Requires a file logging provider like Serilog or a custom implementation
+
 // Add CORS services
 builder.Services.AddCors(options =>
 {
@@ -30,6 +35,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
